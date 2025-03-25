@@ -7,18 +7,20 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary-color: #3498db;
-            --secondary-color: #2c3e50;
-            --accent-color: #e74c3c;
-            --light-color: #ecf0f1;
-            --dark-color: #2c3e50;
-            --text-color: #333;
-            --text-light: #7f8c8d;
-            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            --transition: all 0.3s ease;
-            --success-color: #2ecc71;
-            --warning-color: #f39c12;
-            --info-color: #1abc9c;
+            --primary-color: #6C5CE7;
+            --secondary-color: #2D3436;
+            --accent-color: #FD79A8;
+            --light-color: #f8f9fa;
+            --dark-color: #2D3436;
+            --text-color: #2D3436;
+            --text-light: #636E72;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --success-color: #00B894;
+            --warning-color: #FDCB6E;
+            --info-color: #0984E3;
+            --gradient: linear-gradient(135deg, #6C5CE7 0%, #FD79A8 100%);
+            --gradient-reverse: linear-gradient(135deg, #FD79A8 0%, #6C5CE7 100%);
         }
         
         * {
@@ -26,6 +28,7 @@
             padding: 0;
             box-sizing: border-box;    
             font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            cursor: none;
         }
         
         body {
@@ -34,6 +37,43 @@
             color: var(--text-color);
             line-height: 1.6;
             background-image: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+            overflow-x: hidden;
+        }
+        
+        /* Custom Cursor */
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            position: fixed;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            mix-blend-mode: multiply;
+            z-index: 9999;
+            transition: transform 0.2s ease, width 0.3s ease, height 0.3s ease;
+        }
+        
+        .cursor-follower {
+            width: 40px;
+            height: 40px;
+            border: 2px solid var(--accent-color);
+            border-radius: 50%;
+            position: fixed;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 9998;
+            transition: transform 0.4s ease, width 0.4s ease, height 0.4s ease;
+        }
+        
+        .cursor.active {
+            transform: translate(-50%, -50%) scale(1.5);
+            background-color: var(--accent-color);
+        }
+        
+        .cursor-follower.active {
+            transform: translate(-50%, -50%) scale(0.5);
+            background-color: rgba(253, 121, 168, 0.2);
         }
         
         /* Navbar Styles */
@@ -41,7 +81,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: linear-gradient(135deg, var(--secondary-color) 0%, #1a2a3a 100%);
+            background: var(--gradient);
             color: white;
             padding: 0 30px;
             position: fixed;
@@ -49,8 +89,10 @@
             top: 0;
             left: 0;
             z-index: 1000;
-            box-shadow: var(--shadow);
+            box-shadow: 0 10px 30px rgba(108, 92, 231, 0.3);
             height: 80px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
         
         .navbar-brand {
@@ -62,11 +104,10 @@
             font-size: 24px;
             text-transform: uppercase;
             letter-spacing: 1px;
-            font-weight: 600;
+            font-weight: 700;
             margin-right: 20px;
-            background: linear-gradient(to right, var(--primary-color), var(--info-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: white;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
         
         .nav-menu {
@@ -83,53 +124,126 @@
             color: white;
             text-decoration: none;
             padding: 10px 15px;
-            border-radius: 5px;
+            border-radius: 50px;
             font-weight: 500;
             transition: var(--transition);
             display: flex;
             align-items: center;
-            background-color: rgba(255, 255, 255, 0.1);
+            background-color: rgba(255, 255, 255, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.2);
+            transition: var(--transition);
+        }
+        
+        .nav-link:hover::before {
+            left: 100%;
         }
         
         .nav-link i {
             margin-right: 8px;
             font-size: 16px;
-            color: var(--primary-color);
+            color: white;
         }
         
         .nav-link:hover {
-            background-color: var(--primary-color);
-            transform: translateY(-2px);
+            background-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
         
         .nav-link.active {
-            background-color: var(--primary-color);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            background-color: white;
+            color: var(--primary-color);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .nav-link.active i {
+            color: var(--primary-color);
+        }
+        
+        /* Social Media Buttons */
+        .social-media {
+            display: flex;
+            margin-left: 20px;
+        }
+        
+        .social-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin: 0 5px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .social-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.2);
+            transition: var(--transition);
+        }
+        
+        .social-btn:hover::before {
+            left: 100%;
+        }
+        
+        .social-btn.instagram {
+            background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D);
+        }
+        
+        .social-btn.facebook {
+            background: #3b5998;
+        }
+        
+        .social-btn:hover {
+            transform: translateY(-3px) scale(1.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
         
         /* Language Selector */
         .language-select {
-            background-color: var(--light-color);
-            color: var(--dark-color);
+            background-color: white;
+            color: var(--primary-color);
             border: none;
             padding: 10px 15px;
             font-size: 16px;
             font-weight: 600;
-            border-radius: 6px;
+            border-radius: 50px;
             cursor: pointer;
             transition: var(--transition);
             margin-left: 20px;
-            border: 2px solid var(--primary-color);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
         
         .language-select:hover {
             background-color: var(--primary-color);
             color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(108, 92, 231, 0.3);
         }
         
         .language-select:focus {
             outline: none;
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
+            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.3);
         }
         
         /* Main Layout */
@@ -152,25 +266,57 @@
             margin-right: 30px;
             background: white;
             padding: 25px;
-            border-radius: 15px;
+            border-radius: 20px;
             box-shadow: var(--shadow);
             transition: var(--transition);
-            border: 1px solid #e0e0e0;
-            background: linear-gradient(to bottom right, white, #f0f8ff);
+            border: 1px solid rgba(0,0,0,0.05);
+            background: linear-gradient(to bottom right, white, #f8f9fa);
+            overflow: hidden;
+        }
+        
+        .photo-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background: var(--gradient);
         }
         
         .photo-section:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.1);
+            transform: translateY(-10px) rotate(1deg);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
         }
         
         .profile-img-container {
             position: relative;
             overflow: hidden;
-            border-radius: 10px;
+            border-radius: 15px;
             height: 350px;
-            border: 3px solid var(--primary-color);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+        }
+        
+        .profile-img-container:hover {
+            transform: scale(1.02);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+        
+        .profile-img-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.3), transparent);
+            opacity: 0;
+            transition: var(--transition);
+        }
+        
+        .profile-img-container:hover::after {
+            opacity: 1;
         }
         
         .photo-section img {
@@ -181,7 +327,7 @@
         }
         
         .photo-section img:hover {
-            transform: scale(1.03);
+            transform: scale(1.05);
         }
         
         .thumbnails {
@@ -194,15 +340,17 @@
             width: 80px;
             height: 80px;
             object-fit: cover;
-            border-radius: 8px;
+            border-radius: 15px;
             cursor: pointer;
             border: 2px solid #ddd;
             transition: var(--transition);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
         
         .thumbnails img:hover {
             border-color: var(--primary-color);
-            transform: translateY(-5px) scale(1.1);
+            transform: translateY(-10px) scale(1.1);
+            box-shadow: 0 15px 30px rgba(108, 92, 231, 0.3);
         }
         
         /* Details Section */
@@ -212,44 +360,64 @@
         }
         
         .section-title {
-            font-size: 24px;
+            font-size: 28px;
             color: var(--secondary-color);
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             padding-bottom: 10px;
             border-bottom: 3px solid var(--primary-color);
             display: inline-block;
             text-transform: uppercase;
             letter-spacing: 1px;
-            background: linear-gradient(to right, var(--primary-color), var(--info-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--accent-color);
         }
         
         table {
             width: 100%;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
             border-collapse: collapse;
             background: white;
-            border-radius: 15px;
+            border-radius: 20px;
             overflow: hidden;
             box-shadow: var(--shadow);
             transition: var(--transition);
-            border: 1px solid var(--primary-color);
+            position: relative;
+        }
+        
+        table::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--gradient);
         }
         
         table:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
         }
         
         th, td {
-            border: 1px solid #e0e0e0;
-            padding: 18px;
+            border: 1px solid #f0f0f0;
+            padding: 20px;
             text-align: left;
+            transition: var(--transition);
         }
         
         th {
-            background: linear-gradient(to right, var(--secondary-color), var(--primary-color));
+            background: var(--gradient);
             color: white;
             font-weight: 600;
             text-transform: uppercase;
@@ -263,12 +431,16 @@
         }
         
         tr:hover {
-            background-color: #f1f5f9;
+            background-color: #f1f3ff;
+        }
+        
+        tr:hover td {
+            transform: translateX(10px);
         }
         
         td:first-child {
             font-weight: 600;
-            color: var(--secondary-color);
+            color: var(--primary-color);
             width: 30%;
         }
         
@@ -276,44 +448,93 @@
             color: var(--primary-color);
             text-decoration: none;
             transition: var(--transition);
-            font-weight: 500;
+            font-weight: 600;
+            position: relative;
+        }
+        
+        a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-color);
+            transition: var(--transition);
         }
         
         a:hover {
             color: var(--accent-color);
-            text-decoration: underline;
+        }
+        
+        a:hover::after {
+            width: 100%;
         }
         
         /* Badges */
         .badge {
             display: inline-block;
-            padding: 5px 12px;
-            border-radius: 20px;
+            padding: 6px 15px;
+            border-radius: 50px;
             font-size: 12px;
             font-weight: 600;
             margin-right: 5px;
             color: white;
             text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
+            transition: var(--transition);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .badge:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
         
         .badge-primary {
-            background: linear-gradient(to right, var(--primary-color), #2980b9);
+            background: var(--primary-color);
         }
         
         .badge-secondary {
-            background: linear-gradient(to right, var(--secondary-color), #34495e);
+            background: var(--secondary-color);
         }
         
         .badge-success {
-            background: linear-gradient(to right, var(--success-color), #27ae60);
+            background: var(--success-color);
         }
         
         .badge-warning {
-            background: linear-gradient(to right, var(--warning-color), #d35400);
+            background: var(--warning-color);
+            color: var(--dark-color);
         }
         
         .badge-info {
-            background: linear-gradient(to right, var(--info-color), #16a085);
+            background: var(--info-color);
+        }
+        
+        .badge-accent {
+            background: var(--accent-color);
+        }
+        
+        /* Floating Elements */
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        /* Pulse Animation */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
         }
         
         /* Responsive Design */
@@ -338,6 +559,10 @@
             }
             
             .language-select {
+                margin: 15px 0 0 0;
+            }
+            
+            .social-media {
                 margin: 15px 0 0 0;
             }
         }
@@ -367,6 +592,10 @@
                 padding: 8px 12px;
                 font-size: 14px;
             }
+            
+            * {
+                cursor: auto;
+            }
         }
         
         /* Animation */
@@ -375,37 +604,49 @@
             to { opacity: 1; transform: translateY(0); }
         }
         
-        .photo-section, table {
-            animation: fadeIn 0.6s ease-out forwards;
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
         }
         
-        .photo-section { animation-delay: 0.1s; }
-        table:nth-child(1) { animation-delay: 0.2s; }
-        table:nth-child(2) { animation-delay: 0.3s; }
-        table:nth-child(3) { animation-delay: 0.4s; }
-        table:nth-child(4) { animation-delay: 0.5s; }
-        table:nth-child(5) { animation-delay: 0.6s; }
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .photo-section {
+            animation: slideInLeft 0.8s ease-out forwards;
+        }
+        
+        table:nth-child(odd) {
+            animation: slideInRight 0.8s ease-out forwards;
+        }
+        
+        table:nth-child(even) {
+            animation: slideInLeft 0.8s ease-out forwards;
+        }
         
         /* Scroll to top button */
         .scroll-top {
             position: fixed;
             bottom: 30px;
             right: 30px;
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(to right, var(--primary-color), var(--info-color));
+            width: 60px;
+            height: 60px;
+            background: var(--gradient);
             color: white;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
+            font-size: 24px;
             cursor: pointer;
             opacity: 0;
             visibility: hidden;
             transition: var(--transition);
             z-index: 999;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 30px rgba(108, 92, 231, 0.5);
+            border: none;
         }
         
         .scroll-top.active {
@@ -415,10 +656,63 @@
         
         .scroll-top:hover {
             transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 15px 40px rgba(108, 92, 231, 0.7);
+        }
+        
+        /* Floating Particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: float linear infinite;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            50% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100px);
+                opacity: 0;
+            }
+        }
+        
+        /* 3D Card Effect */
+        .card-3d {
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease;
+        }
+        
+        .card-3d:hover {
+            transform: rotateY(10deg) rotateX(5deg);
         }
     </style>
 </head>
 <body>
+    <!-- Custom Cursor -->
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+    
+    <!-- Floating Particles -->
+    <div class="particles" id="particles"></div>
+    
     <div class="navbar">
         <div class="navbar-brand">
             <h1>Rahul Varmora</h1>
@@ -432,6 +726,11 @@
             <li class="nav-item"><a href="#contact" class="nav-link"><i class="fas fa-phone"></i> <span class="menu-text">Contact</span></a></li>
         </ul>
         
+        <div class="social-media">
+            <a href="https://www.instagram.com/varmoraj" target="_blank" class="social-btn instagram"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.facebook.com/varmoraj" target="_blank" class="social-btn facebook"><i class="fab fa-facebook-f"></i></a>
+        </div>
+        
         <select class="language-select" id="languageSelect" onchange="changeLanguage()">
             <option value="english">English</option>
             <option value="gujarati">ગુજરાતી</option>
@@ -440,8 +739,8 @@
 
     <div class="container">
         <!-- Photo Section -->
-        <div class="photo-section">
-            <div class="profile-img-container">
+        <div class="photo-section card-3d">
+            <div class="profile-img-container floating">
                 <img id="mainPhoto" src="https://raw.githubusercontent.com/varmoraj/Sagar_Varmora/main/sagar3.jpg" alt="Sagar Varmora">
             </div>
             <div class="thumbnails">
@@ -455,7 +754,7 @@
         <div class="details" id="detailsSection">
             <!-- Personal Details -->
             <h2 class="section-title" id="personal">Personal Details</h2>
-            <table>
+            <table class="card-3d">
                 <tr><td width="30%">Full Name</td><td>Rahul Harjivanbhai Varmora</td></tr>
                 <tr><td>Date of Birth</td><td>21<sup>st</sup> March, 1992 (21/03/1992)</td></tr>
                 <tr><td>Place of Birth</td><td>Sara, Gujarat</td></tr>
@@ -467,7 +766,7 @@
 
             <!-- Family Details -->
             <h2 class="section-title" id="family">Family Details</h2>
-            <table>
+            <table class="card-3d">
                 <tr><td>Father</td><td>Harjivanbhai Chaturbhai Varmora</td></tr>
                 <tr><td>Mother</td><td>Shardaben Harjivanbhai Varmora</td></tr>
                 <tr><td>Brothers</td><td>Dipesh Varmora (Married), Sagar Varmora (UnMarried)</td></tr>
@@ -479,15 +778,15 @@
 
             <!-- Business Ventures -->
             <h2 class="section-title" id="business">Business Ventures</h2>
-            <table>
-                <tr><td>Shumangal Marketing</td><td>Dhuva, Morbi <span class="badge badge-primary">Retail</span></td></tr>
-                <tr><td>William John's Pizza</td><td>Mahendranagar, Morbi <span class="badge badge-warning">Food</span></td></tr>
-                <tr><td>Shree Umiya Novelty Parotha House</td><td>Mahendranagar & Dhuva, Morbi <span class="badge badge-success">Food</span></td></tr>
+            <table class="card-3d">
+                <tr><td>Shumangal Marketing</td><td>Dhuva, Morbi <span class="badge badge-primary pulse">Retail</span></td></tr>
+                <tr><td>William John's Pizza</td><td>Mahendranagar, Morbi <span class="badge badge-accent pulse">Food</span></td></tr>
+                <tr><td>Shree Umiya Novelty Parotha House</td><td>Mahendranagar & Dhuva, Morbi <span class="badge badge-success pulse">Food</span></td></tr>
             </table>
 
             <!-- Properties Details -->
             <h2 class="section-title" id="properties">Properties Details</h2>
-            <table>
+            <table class="card-3d">
                 <tr><td>Land</td><td>30 Vigha at Sara <span class="badge badge-info">Agricultural</span></td></tr>
                 <tr><td>House</td><td>1 House at Mahendranagar, Morbi <span class="badge badge-secondary">Residential</span></td></tr>
                 <tr><td>Flat</td><td>1 Flat 2-BHK at Kranti Jyot, Mahendranagar, Morbi <span class="badge badge-secondary">Residential</span></td></tr>
@@ -496,9 +795,21 @@
 
             <!-- Contact Information -->
             <h2 class="section-title" id="contact">Contact Information</h2>
-            <table>
+            <table class="card-3d">
                 <tr><td>Harjivanbhai Varmora (Father)</td><td><a href="tel:9879996376">+91 98799 96376</a></td></tr>
                 <tr><td>Dipeshbhai Varmora (Brother)</td><td><a href="tel:9586343434">+91 9586 343434</a></td></tr>
+            </table>
+            
+            <!-- Social Media Section -->
+            <h2 class="section-title">Connect With Me</h2>
+            <table class="card-3d">
+                <tr>
+                    <td>Social Media</td>
+                    <td>
+                        <a href="https://www.instagram.com/varmoraj" target="_blank" class="badge badge-accent"><i class="fab fa-instagram"></i> Instagram</a>
+                        <a href="https://www.facebook.com/varmoraj" target="_blank" class="badge badge-primary"><i class="fab fa-facebook-f"></i> Facebook</a>
+                    </td>
+                </tr>
             </table>
         </div>
     </div>
@@ -509,6 +820,65 @@
     </div>
 
     <script>
+        // Custom Cursor
+        const cursor = document.querySelector('.cursor');
+        const cursorFollower = document.querySelector('.cursor-follower');
+        
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            
+            setTimeout(() => {
+                cursorFollower.style.left = e.clientX + 'px';
+                cursorFollower.style.top = e.clientY + 'px';
+            }, 100);
+        });
+        
+        document.querySelectorAll('a, button, .language-select, .thumbnails img').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.classList.add('active');
+                cursorFollower.classList.add('active');
+            });
+            
+            el.addEventListener('mouseleave', () => {
+                cursor.classList.remove('active');
+                cursorFollower.classList.remove('active');
+            });
+        });
+        
+        // Floating Particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 30;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Random position
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100 + 100;
+                
+                // Random size
+                const size = Math.random() * 5 + 2;
+                
+                // Random animation duration
+                const duration = Math.random() * 20 + 10;
+                
+                // Random delay
+                const delay = Math.random() * 10;
+                
+                particle.style.left = `${posX}%`;
+                particle.style.top = `${posY}%`;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.animationDuration = `${duration}s`;
+                particle.style.animationDelay = `${delay}s`;
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
         // Photo switcher
         function changePhoto(img) {
             document.getElementById("mainPhoto").src = img.src;
@@ -516,8 +886,20 @@
             
             // Add active class to clicked thumbnail
             const thumbnails = document.querySelectorAll('.thumbnails img');
-            thumbnails.forEach(thumb => thumb.style.borderColor = '#ddd');
-            img.style.borderColor = '#3498db';
+            thumbnails.forEach(thumb => {
+                thumb.style.borderColor = '#ddd';
+                thumb.style.transform = 'translateY(0) scale(1)';
+            });
+            
+            img.style.borderColor = 'var(--primary-color)';
+            img.style.transform = 'translateY(-10px) scale(1.1)';
+            
+            // Add pulse effect to main photo
+            const mainPhoto = document.getElementById("mainPhoto");
+            mainPhoto.parentElement.classList.add('pulse');
+            setTimeout(() => {
+                mainPhoto.parentElement.classList.remove('pulse');
+            }, 1000);
         }
         
         // Language switcher
@@ -530,17 +912,18 @@
                 // Update content
                 details.innerHTML = `
                     <h2 class="section-title" id="personal">વ્યક્તિગત વિગતો</h2>
-                    <table>
+                    <table class="card-3d">
                         <tr><td width="30%">પૂરું નામ</td><td>રાહુલ હરજીવનભાઈ વરમોરા</td></tr>
                         <tr><td>જન્મ તારીખ</td><td>21 મી માર્ચ, 1992 (21/03/1992)</td></tr>
                         <tr><td>જન્મ સ્થળ</td><td>સરા, ગુજરાત</td></tr>
                         <tr><td>ઊંચાઈ</td><td>5 ફૂટ 8 ઇંચ</td></tr>
                         <tr><td>શિક્ષણ</td><td>I.T.I. (Instrument Michenic)</td></tr>
                         <tr><td>મોસાળ</td><td>જસાપરા (ખાખરેચી)</td></tr>
+                        <tr><td>વૈવાહિક સ્થિતિ</td><td>છૂટાછેડા લીધેલ</td></tr>
                     </table>
 
                     <h2 class="section-title" id="family">કુટુંબની વિગતો</h2>
-                    <table>
+                    <table class="card-3d">
                         <tr><td>પિતા</td><td>હરજીવનભાઈ ચતુરભાઈ વરમોરા</td></tr>
                         <tr><td>માતા</td><td>શારદાબેન હરજીવનભાઈ વરમોરા</td></tr>
                         <tr><td>ભાઈઓ</td><td>દિપેશ વરમોરા (પરિણીત), સાગર વરમોરા (અપરણિત )</td></tr>
@@ -551,14 +934,14 @@
                     </table>
 
                     <h2 class="section-title" id="business">વ્યવસાયિક પ્રવૃત્તિઓ</h2>
-                    <table>
-                        <tr><td>શુમંગલ માર્કેટિંગ</td><td>ઢુવા, મોરબી <span class="badge badge-primary">રીટેલ</span></td></tr>
-                        <tr><td>વિલિયમ જોન્સ પિઝા</td><td>મહેન્દ્રનગર, મોરબી <span class="badge badge-warning">ફૂડ</span></td></tr>
-                        <tr><td>શ્રી ઉમિયા નોવેલ્ટી પરોઠા હાઉસ</td><td>મહેન્દ્રનગર અને ઢુવા, મોરબી <span class="badge badge-success">ફૂડ</span></td></tr>
+                    <table class="card-3d">
+                        <tr><td>શુમંગલ માર્કેટિંગ</td><td>ઢુવા, મોરબી <span class="badge badge-primary pulse">રીટેલ</span></td></tr>
+                        <tr><td>વિલિયમ જોન્સ પિઝા</td><td>મહેન્દ્રનગર, મોરબી <span class="badge badge-accent pulse">ફૂડ</span></td></tr>
+                        <tr><td>શ્રી ઉમિયા નોવેલ્ટી પરોઠા હાઉસ</td><td>મહેન્દ્રનગર અને ઢુવા, મોરબી <span class="badge badge-success pulse">ફૂડ</span></td></tr>
                     </table>
 
                     <h2 class="section-title" id="properties">મિલકતની વિગતો</h2>
-                    <table>
+                    <table class="card-3d">
                         <tr><td>જમીન</td><td>30 વીઘા જમીન - સરા <span class="badge badge-info">કૃષિ</span></td></tr>
                         <tr><td>ઘર</td><td>1 - મકાન મહેન્દ્રનગર મોરબી <span class="badge badge-secondary">રહેણાંક</span></td></tr>
                         <tr><td>ફ્લેટ</td><td>1 - 2.BHK ફ્લેટ ક્રાંતિ જ્યોતમાં - 1, મહેન્દ્રનગર, મોરબી <span class="badge badge-secondary">રહેણાંક</span></td></tr>
@@ -566,9 +949,20 @@
                     </table>
 
                     <h2 class="section-title" id="contact">સંપર્ક માહિતી</h2>
-                    <table>
+                    <table class="card-3d">
                         <tr><td>હરજીવનભાઈ વરમોરા (પિતા)</td><td><a href="tel:9879996376">+91 98799 96376</a></td></tr>
                         <tr><td>દિપેશભાઈ વરમોરા (ભાઈ)</td><td><a href="tel:9586343434">+91 9586 343434</a></td></tr>
+                    </table>
+                    
+                    <h2 class="section-title">મારી સાથે જોડાઓ</h2>
+                    <table class="card-3d">
+                        <tr>
+                            <td>સોશિયલ મીડિયા</td>
+                            <td>
+                                <a href="https://www.instagram.com/varmoraj" target="_blank" class="badge badge-accent"><i class="fab fa-instagram"></i> Instagram</a>
+                                <a href="https://www.facebook.com/varmoraj" target="_blank" class="badge badge-primary"><i class="fab fa-facebook-f"></i> Facebook</a>
+                            </td>
+                        </tr>
                     </table>
                 `;
                 
@@ -584,17 +978,18 @@
                 // Update content
                 details.innerHTML = `
                     <h2 class="section-title" id="personal">Personal Details</h2>
-                    <table>
+                    <table class="card-3d">
                         <tr><td width="30%">Full Name</td><td>Rahul Harjivanbhai Varmora</td></tr>
                         <tr><td>Date of Birth</td><td>21<sup>st</sup> March, 1992 (21/03/1992)</td></tr>
                         <tr><td>Place of Birth</td><td>Sara, Gujarat</td></tr>
                         <tr><td>Height</td><td>5 Feet 8 Inches</td></tr>
                         <tr><td>Education</td><td>I.T.I. (Instrument Michenic)</td></tr>
                         <tr><td>Maternal</td><td>Jasapara (Khakhrechi)</td></tr>
+                        <tr><td>Marital status </td><td>Divorced</td></tr>
                     </table>
 
                     <h2 class="section-title" id="family">Family Details</h2>
-                    <table>
+                    <table class="card-3d">
                         <tr><td>Father</td><td>Harjivanbhai Chaturbhai Varmora</td></tr>
                         <tr><td>Mother</td><td>Shardaben Harjivanbhai Varmora</td></tr>
                         <tr><td>Brothers</td><td>Dipesh Varmora (Married), Sagar Varmora (UnMarried)</td></tr>
@@ -605,14 +1000,14 @@
                     </table>
 
                     <h2 class="section-title" id="business">Business Ventures</h2>
-                    <table>
-                        <tr><td>Shumangal Marketing</td><td>Dhuva, Morbi <span class="badge badge-primary">Retail</span></td></tr>
-                        <tr><td>William John's Pizza</td><td>Mahendranagar, Morbi <span class="badge badge-warning">Food</span></td></tr>
-                        <tr><td>Shree Umiya Novelty Parotha House</td><td>Mahendranagar & Dhuva, Morbi <span class="badge badge-success">Food</span></td></tr>
+                    <table class="card-3d">
+                        <tr><td>Shumangal Marketing</td><td>Dhuva, Morbi <span class="badge badge-primary pulse">Retail</span></td></tr>
+                        <tr><td>William John's Pizza</td><td>Mahendranagar, Morbi <span class="badge badge-accent pulse">Food</span></td></tr>
+                        <tr><td>Shree Umiya Novelty Parotha House</td><td>Mahendranagar & Dhuva, Morbi <span class="badge badge-success pulse">Food</span></td></tr>
                     </table>
 
                     <h2 class="section-title" id="properties">Properties Details</h2>
-                    <table>
+                    <table class="card-3d">
                         <tr><td>Land</td><td>30 Vigha at Sara <span class="badge badge-info">Agricultural</span></td></tr>
                         <tr><td>House</td><td>1 House at Mahendranagar, Morbi <span class="badge badge-secondary">Residential</span></td></tr>
                         <tr><td>Flat</td><td>1 Flat 2-BHK at Kranti Jyot, Mahendranagar, Morbi <span class="badge badge-secondary">Residential</span></td></tr>
@@ -620,9 +1015,20 @@
                     </table>
 
                     <h2 class="section-title" id="contact">Contact Information</h2>
-                    <table>
+                    <table class="card-3d">
                         <tr><td>Harjivanbhai Varmora (Father)</td><td><a href="tel:9879996376">+91 98799 96376</a></td></tr>
                         <tr><td>Dipeshbhai Varmora (Brother)</td><td><a href="tel:9586343434">+91 9586 343434</a></td></tr>
+                    </table>
+                    
+                    <h2 class="section-title">Connect With Me</h2>
+                    <table class="card-3d">
+                        <tr>
+                            <td>Social Media</td>
+                            <td>
+                                <a href="https://www.instagram.com/varmoraj" target="_blank" class="badge badge-accent"><i class="fab fa-instagram"></i> Instagram</a>
+                                <a href="https://www.facebook.com/varmoraj" target="_blank" class="badge badge-primary"><i class="fab fa-facebook-f"></i> Facebook</a>
+                            </td>
+                        </tr>
                     </table>
                 `;
                 
@@ -639,6 +1045,34 @@
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', smoothScroll);
             });
+            
+            // Reinitialize 3D card effects
+            document.querySelectorAll('.card-3d').forEach(card => {
+                card.addEventListener('mousemove', card3DEffect);
+                card.addEventListener('mouseleave', resetCard3DEffect);
+            });
+        }
+        
+        // 3D Card Effect
+        function card3DEffect(e) {
+            const card = this;
+            const cardRect = card.getBoundingClientRect();
+            const cardCenterX = cardRect.left + cardRect.width / 2;
+            const cardCenterY = cardRect.top + cardRect.height / 2;
+            
+            const mouseX = e.clientX - cardCenterX;
+            const mouseY = e.clientY - cardCenterY;
+            
+            const rotateX = (mouseY / cardRect.height) * -10;
+            const rotateY = (mouseX / cardRect.width) * 10;
+            
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            card.style.boxShadow = `${-mouseX/20}px ${-mouseY/20}px 30px rgba(0,0,0,0.2)`;
+        }
+        
+        function resetCard3DEffect() {
+            this.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
+            this.style.boxShadow = '0 10px 30px rgba(0,0,0,0.1)';
         }
         
         // Smooth scrolling for navigation
@@ -704,6 +1138,9 @@
         
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
+            // Create particles
+            createParticles();
+            
             // Add smooth scroll to all links
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', smoothScroll);
@@ -718,7 +1155,14 @@
             });
             
             // Set first thumbnail as active
-            document.querySelector('.thumbnails img').style.borderColor = '#3498db';
+            document.querySelector('.thumbnails img').style.borderColor = 'var(--primary-color)';
+            document.querySelector('.thumbnails img').style.transform = 'translateY(-10px) scale(1.1)';
+            
+            // Initialize 3D card effects
+            document.querySelectorAll('.card-3d').forEach(card => {
+                card.addEventListener('mousemove', card3DEffect);
+                card.addEventListener('mouseleave', resetCard3DEffect);
+            });
         });
     </script>
 </body>
