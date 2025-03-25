@@ -7,20 +7,19 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary-color: #6C5CE7;
-            --secondary-color: #2D3436;
-            --accent-color: #FD79A8;
+            --primary-color: #004d33; /* Darker Bottle Green */
+            --secondary-color: #C19A6B; /* Rich Rose Gold */
+            --accent-color: #D4AF37; /* Gold */
             --light-color: #f8f9fa;
-            --dark-color: #2D3436;
-            --text-color: #2D3436;
-            --text-light: #636E72;
+            --dark-color: #1a2a3a;
+            --text-color: #333;
+            --text-light: #7f8c8d;
             --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
             --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-            --success-color: #00B894;
-            --warning-color: #FDCB6E;
-            --info-color: #0984E3;
-            --gradient: linear-gradient(135deg, #6C5CE7 0%, #FD79A8 100%);
-            --gradient-reverse: linear-gradient(135deg, #FD79A8 0%, #6C5CE7 100%);
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --info-color: #17a2b8;
+            --gradient: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
         }
         
         * {
@@ -28,52 +27,18 @@
             padding: 0;
             box-sizing: border-box;    
             font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            cursor: none;
         }
         
         body {
             background-color: #f8f9fa;
-            padding-top: 80px;
+            padding-top: 80px; /* This matches navbar height */
             color: var(--text-color);
             line-height: 1.6;
-            background-image: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+            background-color: #f5f5f5;
             overflow-x: hidden;
-        }
-        
-        /* Custom Cursor */
-        .cursor {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background-color: var(--primary-color);
-            position: fixed;
-            transform: translate(-50%, -50%);
-            pointer-events: none;
-            mix-blend-mode: multiply;
-            z-index: 9999;
-            transition: transform 0.2s ease, width 0.3s ease, height 0.3s ease;
-        }
-        
-        .cursor-follower {
-            width: 40px;
-            height: 40px;
-            border: 2px solid var(--accent-color);
-            border-radius: 50%;
-            position: fixed;
-            transform: translate(-50%, -50%);
-            pointer-events: none;
-            z-index: 9998;
-            transition: transform 0.4s ease, width 0.4s ease, height 0.4s ease;
-        }
-        
-        .cursor.active {
-            transform: translate(-50%, -50%) scale(1.5);
-            background-color: var(--accent-color);
-        }
-        
-        .cursor-follower.active {
-            transform: translate(-50%, -50%) scale(0.5);
-            background-color: rgba(253, 121, 168, 0.2);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
         
         /* Navbar Styles */
@@ -81,7 +46,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: var(--gradient);
+            background: var(--primary-color);
             color: white;
             padding: 0 30px;
             position: fixed;
@@ -89,10 +54,8 @@
             top: 0;
             left: 0;
             z-index: 1000;
-            box-shadow: 0 10px 30px rgba(108, 92, 231, 0.3);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             height: 80px;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
         }
         
         .navbar-brand {
@@ -107,7 +70,6 @@
             font-weight: 700;
             margin-right: 20px;
             color: white;
-            text-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
         
         .nav-menu {
@@ -124,99 +86,33 @@
             color: white;
             text-decoration: none;
             padding: 10px 15px;
-            border-radius: 50px;
+            border-radius: 5px;
             font-weight: 500;
             transition: var(--transition);
             display: flex;
             align-items: center;
-            background-color: rgba(255, 255, 255, 0.15);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .nav-link::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: rgba(255,255,255,0.2);
-            transition: var(--transition);
-        }
-        
-        .nav-link:hover::before {
-            left: 100%;
+            background-color: rgba(255, 255, 255, 0.1);
         }
         
         .nav-link i {
             margin-right: 8px;
             font-size: 16px;
-            color: white;
+            color: var(--accent-color);
         }
         
         .nav-link:hover {
-            background-color: rgba(255, 255, 255, 0.3);
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
         }
         
         .nav-link.active {
-            background-color: white;
+            background-color: var(--accent-color);
             color: var(--primary-color);
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
         
         .nav-link.active i {
             color: var(--primary-color);
-        }
-        
-        /* Social Media Buttons */
-        .social-media {
-            display: flex;
-            margin-left: 20px;
-        }
-        
-        .social-btn {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            margin: 0 5px;
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .social-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: rgba(255,255,255,0.2);
-            transition: var(--transition);
-        }
-        
-        .social-btn:hover::before {
-            left: 100%;
-        }
-        
-        .social-btn.instagram {
-            background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D);
-        }
-        
-        .social-btn.facebook {
-            background: #3b5998;
-        }
-        
-        .social-btn:hover {
-            transform: translateY(-3px) scale(1.1);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
         
         /* Language Selector */
@@ -227,23 +123,15 @@
             padding: 10px 15px;
             font-size: 16px;
             font-weight: 600;
-            border-radius: 50px;
+            border-radius: 5px;
             cursor: pointer;
             transition: var(--transition);
             margin-left: 20px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
         
         .language-select:hover {
-            background-color: var(--primary-color);
+            background-color: var(--accent-color);
             color: white;
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(108, 92, 231, 0.3);
-        }
-        
-        .language-select:focus {
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.3);
         }
         
         /* Main Layout */
@@ -253,70 +141,32 @@
             padding: 30px;
             max-width: 1200px;
             margin: 0 auto;
+            margin-top: 20px; /* Added space below navbar */
+            flex: 1;
         }
         
-        /* Photo Section */
+        /* Photo Section - Fixed for mobile */
         .photo-section {
             flex: 1;
             min-width: 300px;
             max-width: 350px;
-            position: sticky;
-            top: 100px;
-            align-self: flex-start;
             margin-right: 30px;
             background: white;
             padding: 25px;
-            border-radius: 20px;
+            border-radius: 10px;
             box-shadow: var(--shadow);
             transition: var(--transition);
-            border: 1px solid rgba(0,0,0,0.05);
-            background: linear-gradient(to bottom right, white, #f8f9fa);
-            overflow: hidden;
-        }
-        
-        .photo-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 10px;
-            background: var(--gradient);
-        }
-        
-        .photo-section:hover {
-            transform: translateY(-10px) rotate(1deg);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(0,0,0,0.1);
+            margin-bottom: 30px; /* Added for mobile spacing */
         }
         
         .profile-img-container {
             position: relative;
             overflow: hidden;
-            border-radius: 15px;
+            border-radius: 10px;
             height: 350px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            transition: var(--transition);
-        }
-        
-        .profile-img-container:hover {
-            transform: scale(1.02);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-        }
-        
-        .profile-img-container::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to top, rgba(0,0,0,0.3), transparent);
-            opacity: 0;
-            transition: var(--transition);
-        }
-        
-        .profile-img-container:hover::after {
-            opacity: 1;
+            border: 3px solid var(--secondary-color);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
         
         .photo-section img {
@@ -324,10 +174,6 @@
             height: 100%;
             object-fit: cover;
             transition: var(--transition);
-        }
-        
-        .photo-section img:hover {
-            transform: scale(1.05);
         }
         
         .thumbnails {
@@ -340,17 +186,15 @@
             width: 80px;
             height: 80px;
             object-fit: cover;
-            border-radius: 15px;
+            border-radius: 8px;
             cursor: pointer;
             border: 2px solid #ddd;
             transition: var(--transition);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
         
         .thumbnails img:hover {
-            border-color: var(--primary-color);
-            transform: translateY(-10px) scale(1.1);
-            box-shadow: 0 15px 30px rgba(108, 92, 231, 0.3);
+            border-color: var(--accent-color);
+            transform: translateY(-5px);
         }
         
         /* Details Section */
@@ -360,70 +204,42 @@
         }
         
         .section-title {
-            font-size: 28px;
-            color: var(--secondary-color);
-            margin-bottom: 25px;
+            font-size: 24px;
+            color: var(--primary-color);
+            margin-bottom: 20px;
             padding-bottom: 10px;
-            border-bottom: 3px solid var(--primary-color);
+            border-bottom: 3px solid var(--accent-color);
             display: inline-block;
             text-transform: uppercase;
             letter-spacing: 1px;
-            font-weight: 700;
-            position: relative;
-        }
-        
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -3px;
-            left: 0;
-            width: 50px;
-            height: 3px;
-            background: var(--accent-color);
+            font-weight: 600;
         }
         
         table {
             width: 100%;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             border-collapse: collapse;
             background: white;
-            border-radius: 20px;
+            border-radius: 10px;
             overflow: hidden;
             box-shadow: var(--shadow);
             transition: var(--transition);
-            position: relative;
-        }
-        
-        table::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 5px;
-            height: 100%;
-            background: var(--gradient);
-        }
-        
-        table:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            border-left: 5px solid var(--secondary-color);
         }
         
         th, td {
             border: 1px solid #f0f0f0;
-            padding: 20px;
+            padding: 15px;
             text-align: left;
-            transition: var(--transition);
         }
         
         th {
-            background: var(--gradient);
+            background-color: var(--primary-color);
             color: white;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.8px;
             font-size: 16px;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
         }
         
         tr:nth-child(even) {
@@ -432,10 +248,6 @@
         
         tr:hover {
             background-color: #f1f3ff;
-        }
-        
-        tr:hover td {
-            transform: translateX(10px);
         }
         
         td:first-child {
@@ -448,101 +260,146 @@
             color: var(--primary-color);
             text-decoration: none;
             transition: var(--transition);
-            font-weight: 600;
-            position: relative;
-        }
-        
-        a::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--accent-color);
-            transition: var(--transition);
+            font-weight: 500;
         }
         
         a:hover {
             color: var(--accent-color);
-        }
-        
-        a:hover::after {
-            width: 100%;
+            text-decoration: underline;
         }
         
         /* Badges */
         .badge {
             display: inline-block;
-            padding: 6px 15px;
-            border-radius: 50px;
+            padding: 5px 12px;
+            border-radius: 20px;
             font-size: 12px;
             font-weight: 600;
             margin-right: 5px;
             color: white;
-            text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
-            transition: var(--transition);
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-        }
-        
-        .badge:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
         
         .badge-primary {
-            background: var(--primary-color);
+            background-color: var(--primary-color);
         }
         
         .badge-secondary {
-            background: var(--secondary-color);
+            background-color: var(--secondary-color);
         }
         
         .badge-success {
-            background: var(--success-color);
+            background-color: var(--success-color);
         }
         
         .badge-warning {
-            background: var(--warning-color);
+            background-color: var(--warning-color);
             color: var(--dark-color);
         }
         
         .badge-info {
-            background: var(--info-color);
+            background-color: var(--info-color);
         }
         
         .badge-accent {
-            background: var(--accent-color);
+            background-color: var(--accent-color);
+            color: var(--primary-color);
         }
         
-        /* Floating Elements */
-        .floating {
-            animation: floating 3s ease-in-out infinite;
+        /* Footer with Social Media */
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+            margin-top: auto;
         }
         
-        @keyframes floating {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-            100% { transform: translateY(0px); }
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 30px;
         }
         
-        /* Pulse Animation */
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+        .social-media {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
         }
         
-        .pulse {
-            animation: pulse 2s infinite;
+        .social-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin: 0 10px;
+            transition: var(--transition);
+            background-color: var(--secondary-color);
+            font-size: 20px;
         }
         
-        /* Responsive Design */
+        .social-btn:hover {
+            transform: translateY(-5px) scale(1.1);
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .copyright {
+            margin-top: 20px;
+            color: rgba(255,255,255,0.7);
+            font-size: 14px;
+        }
+        
+        /* Scroll to top button */
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            z-index: 999;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .scroll-top.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .scroll-top:hover {
+            transform: translateY(-5px);
+        }
+        
+        /* Responsive Design - Fixed mobile navbar */
         @media (max-width: 992px) {
             .navbar {
                 flex-direction: column;
                 height: auto;
                 padding: 15px;
+                position: relative; /* Changed from fixed to relative on mobile */
+            }
+            
+            body {
+                padding-top: 0; /* Remove padding since navbar is no longer fixed */
+            }
+            
+            .container {
+                margin-top: 0; /* Remove margin since navbar is relative */
+                padding-top: 20px; /* Add some spacing at the top */
             }
             
             .navbar-brand {
@@ -562,8 +419,9 @@
                 margin: 15px 0 0 0;
             }
             
-            .social-media {
-                margin: 15px 0 0 0;
+            .photo-section {
+                max-width: 100%;
+                margin-right: 0;
             }
         }
         
@@ -574,14 +432,7 @@
             }
             
             .photo-section {
-                position: static;
-                max-width: 100%;
-                margin-right: 0;
                 margin-bottom: 30px;
-            }
-            
-            .details {
-                width: 100%;
             }
             
             .navbar h1 {
@@ -593,8 +444,10 @@
                 font-size: 14px;
             }
             
-            * {
-                cursor: auto;
+            .social-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
             }
         }
         
@@ -604,115 +457,12 @@
             to { opacity: 1; transform: translateY(0); }
         }
         
-        @keyframes slideInLeft {
-            from { opacity: 0; transform: translateX(-50px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-        
-        @keyframes slideInRight {
-            from { opacity: 0; transform: translateX(50px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-        
-        .photo-section {
-            animation: slideInLeft 0.8s ease-out forwards;
-        }
-        
-        table:nth-child(odd) {
-            animation: slideInRight 0.8s ease-out forwards;
-        }
-        
-        table:nth-child(even) {
-            animation: slideInLeft 0.8s ease-out forwards;
-        }
-        
-        /* Scroll to top button */
-        .scroll-top {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 60px;
-            height: 60px;
-            background: var(--gradient);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            cursor: pointer;
-            opacity: 0;
-            visibility: hidden;
-            transition: var(--transition);
-            z-index: 999;
-            box-shadow: 0 10px 30px rgba(108, 92, 231, 0.5);
-            border: none;
-        }
-        
-        .scroll-top.active {
-            opacity: 1;
-            visibility: visible;
-        }
-        
-        .scroll-top:hover {
-            transform: translateY(-5px) scale(1.1);
-            box-shadow: 0 15px 40px rgba(108, 92, 231, 0.7);
-        }
-        
-        /* Floating Particles */
-        .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-        }
-        
-        .particle {
-            position: absolute;
-            width: 5px;
-            height: 5px;
-            background: var(--primary-color);
-            border-radius: 50%;
-            opacity: 0.5;
-            animation: float linear infinite;
-        }
-        
-        @keyframes float {
-            0% {
-                transform: translateY(0) translateX(0);
-                opacity: 0;
-            }
-            50% {
-                opacity: 0.8;
-            }
-            100% {
-                transform: translateY(-100vh) translateX(100px);
-                opacity: 0;
-            }
-        }
-        
-        /* 3D Card Effect */
-        .card-3d {
-            transform-style: preserve-3d;
-            transition: transform 0.5s ease;
-        }
-        
-        .card-3d:hover {
-            transform: rotateY(10deg) rotateX(5deg);
+        .photo-section, table {
+            animation: fadeIn 0.6s ease-out forwards;
         }
     </style>
 </head>
 <body>
-    <!-- Custom Cursor -->
-    <div class="cursor"></div>
-    <div class="cursor-follower"></div>
-    
-    <!-- Floating Particles -->
-    <div class="particles" id="particles"></div>
-    
     <div class="navbar">
         <div class="navbar-brand">
             <h1>Rahul Varmora</h1>
@@ -726,11 +476,6 @@
             <li class="nav-item"><a href="#contact" class="nav-link"><i class="fas fa-phone"></i> <span class="menu-text">Contact</span></a></li>
         </ul>
         
-        <div class="social-media">
-            <a href="https://www.instagram.com/varmoraj" target="_blank" class="social-btn instagram"><i class="fab fa-instagram"></i></a>
-            <a href="https://www.facebook.com/varmoraj" target="_blank" class="social-btn facebook"><i class="fab fa-facebook-f"></i></a>
-        </div>
-        
         <select class="language-select" id="languageSelect" onchange="changeLanguage()">
             <option value="english">English</option>
             <option value="gujarati">ગુજરાતી</option>
@@ -739,14 +484,14 @@
 
     <div class="container">
         <!-- Photo Section -->
-        <div class="photo-section card-3d">
-            <div class="profile-img-container floating">
-                <img id="mainPhoto" src="https://raw.githubusercontent.com/varmoraj/RahulVarmora/refs/heads/main/RahulPayal4.jpg" alt="Sagar Varmora">
+        <div class="photo-section">
+            <div class="profile-img-container">
+                <img id="mainPhoto" src="https://raw.githubusercontent.com/varmoraj/Sagar_Varmora/main/sagar3.jpg" alt="Sagar Varmora">
             </div>
             <div class="thumbnails">
-                <img src="https://raw.githubusercontent.com/varmoraj/RahulVarmora/refs/heads/main/RahulPayal1.jpg" onclick="changePhoto(this)" alt="Profile 1">
-                <img src="https://raw.githubusercontent.com/varmoraj/RahulVarmora/refs/heads/main/RahulPayal3.jpg" onclick="changePhoto(this)" alt="Business 1">
-                <img src="https://raw.githubusercontent.com/varmoraj/RahulVarmora/refs/heads/main/RahulPayal11.jpg" onclick="changePhoto(this)" alt="Business 2">
+                <img src="https://raw.githubusercontent.com/varmoraj/Sagar_Varmora/main/sagar3.jpg" onclick="changePhoto(this)" alt="Profile 1">
+                <img src="https://raw.githubusercontent.com/varmoraj/Sagar_Varmora/main/sagar.jpg" onclick="changePhoto(this)" alt="Business 1">
+                <img src="https://raw.githubusercontent.com/varmoraj/Sagar_Varmora/main/sagar2.jpg" onclick="changePhoto(this)" alt="Business 2">
             </div>
         </div>
         
@@ -754,7 +499,7 @@
         <div class="details" id="detailsSection">
             <!-- Personal Details -->
             <h2 class="section-title" id="personal">Personal Details</h2>
-            <table class="card-3d">
+            <table>
                 <tr><td width="30%">Full Name</td><td>Rahul Harjivanbhai Varmora</td></tr>
                 <tr><td>Date of Birth</td><td>21<sup>st</sup> March, 1992 (21/03/1992)</td></tr>
                 <tr><td>Place of Birth</td><td>Sara, Gujarat</td></tr>
@@ -766,7 +511,7 @@
 
             <!-- Family Details -->
             <h2 class="section-title" id="family">Family Details</h2>
-            <table class="card-3d">
+            <table>
                 <tr><td>Father</td><td>Harjivanbhai Chaturbhai Varmora</td></tr>
                 <tr><td>Mother</td><td>Shardaben Harjivanbhai Varmora</td></tr>
                 <tr><td>Brothers</td><td>Dipesh Varmora (Married), Sagar Varmora (UnMarried)</td></tr>
@@ -778,15 +523,15 @@
 
             <!-- Business Ventures -->
             <h2 class="section-title" id="business">Business Ventures</h2>
-            <table class="card-3d">
-                <tr><td>Shumangal Marketing</td><td>Dhuva, Morbi <span class="badge badge-primary pulse">Retail</span></td></tr>
-                <tr><td>William John's Pizza</td><td>Mahendranagar, Morbi <span class="badge badge-accent pulse">Food</span></td></tr>
-                <tr><td>Shree Umiya Novelty Parotha House</td><td>Mahendranagar & Dhuva, Morbi <span class="badge badge-success pulse">Food</span></td></tr>
+            <table>
+                <tr><td>Shumangal Marketing</td><td>Dhuva, Morbi <span class="badge badge-primary">Retail</span></td></tr>
+                <tr><td>William John's Pizza</td><td>Mahendranagar, Morbi <span class="badge badge-accent">Food</span></td></tr>
+                <tr><td>Shree Umiya Novelty Parotha House</td><td>Mahendranagar & Dhuva, Morbi <span class="badge badge-success">Food</span></td></tr>
             </table>
 
             <!-- Properties Details -->
             <h2 class="section-title" id="properties">Properties Details</h2>
-            <table class="card-3d">
+            <table>
                 <tr><td>Land</td><td>30 Vigha at Sara <span class="badge badge-info">Agricultural</span></td></tr>
                 <tr><td>House</td><td>1 House at Mahendranagar, Morbi <span class="badge badge-secondary">Residential</span></td></tr>
                 <tr><td>Flat</td><td>1 Flat 2-BHK at Kranti Jyot, Mahendranagar, Morbi <span class="badge badge-secondary">Residential</span></td></tr>
@@ -795,24 +540,25 @@
 
             <!-- Contact Information -->
             <h2 class="section-title" id="contact">Contact Information</h2>
-            <table class="card-3d">
+            <table>
                 <tr><td>Harjivanbhai Varmora (Father)</td><td><a href="tel:9879996376">+91 98799 96376</a></td></tr>
                 <tr><td>Dipeshbhai Varmora (Brother)</td><td><a href="tel:9586343434">+91 9586 343434</a></td></tr>
             </table>
-            
-            <!-- Social Media Section -->
-            <h2 class="section-title">Connect With Me</h2>
-            <table class="card-3d">
-                <tr>
-                    <td>Social Media</td>
-                    <td>
-                        <a href="https://www.instagram.com/varmoraj" target="_blank" class="badge badge-accent"><i class="fab fa-instagram"></i> Instagram</a>
-                        <a href="https://www.facebook.com/varmoraj" target="_blank" class="badge badge-primary"><i class="fab fa-facebook-f"></i> Facebook</a>
-                    </td>
-                </tr>
-            </table>
         </div>
     </div>
+
+    <!-- Footer with Social Media -->
+    <footer>
+        <div class="footer-content">
+            <div class="social-media">
+                <a href="https://www.instagram.com/varmoraj" target="_blank" class="social-btn"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.facebook.com/varmoraj" target="_blank" class="social-btn"><i class="fab fa-facebook-f"></i></a>
+            </div>
+            <div class="copyright">
+                &copy; 2023 Rahul Varmora. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
 
     <!-- Scroll to top button -->
     <div class="scroll-top" id="scrollTop">
@@ -820,65 +566,6 @@
     </div>
 
     <script>
-        // Custom Cursor
-        const cursor = document.querySelector('.cursor');
-        const cursorFollower = document.querySelector('.cursor-follower');
-        
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-            
-            setTimeout(() => {
-                cursorFollower.style.left = e.clientX + 'px';
-                cursorFollower.style.top = e.clientY + 'px';
-            }, 100);
-        });
-        
-        document.querySelectorAll('a, button, .language-select, .thumbnails img').forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                cursor.classList.add('active');
-                cursorFollower.classList.add('active');
-            });
-            
-            el.addEventListener('mouseleave', () => {
-                cursor.classList.remove('active');
-                cursorFollower.classList.remove('active');
-            });
-        });
-        
-        // Floating Particles
-        function createParticles() {
-            const particlesContainer = document.getElementById('particles');
-            const particleCount = 30;
-            
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.classList.add('particle');
-                
-                // Random position
-                const posX = Math.random() * 100;
-                const posY = Math.random() * 100 + 100;
-                
-                // Random size
-                const size = Math.random() * 5 + 2;
-                
-                // Random animation duration
-                const duration = Math.random() * 20 + 10;
-                
-                // Random delay
-                const delay = Math.random() * 10;
-                
-                particle.style.left = `${posX}%`;
-                particle.style.top = `${posY}%`;
-                particle.style.width = `${size}px`;
-                particle.style.height = `${size}px`;
-                particle.style.animationDuration = `${duration}s`;
-                particle.style.animationDelay = `${delay}s`;
-                
-                particlesContainer.appendChild(particle);
-            }
-        }
-        
         // Photo switcher
         function changePhoto(img) {
             document.getElementById("mainPhoto").src = img.src;
@@ -886,20 +573,8 @@
             
             // Add active class to clicked thumbnail
             const thumbnails = document.querySelectorAll('.thumbnails img');
-            thumbnails.forEach(thumb => {
-                thumb.style.borderColor = '#ddd';
-                thumb.style.transform = 'translateY(0) scale(1)';
-            });
-            
-            img.style.borderColor = 'var(--primary-color)';
-            img.style.transform = 'translateY(-10px) scale(1.1)';
-            
-            // Add pulse effect to main photo
-            const mainPhoto = document.getElementById("mainPhoto");
-            mainPhoto.parentElement.classList.add('pulse');
-            setTimeout(() => {
-                mainPhoto.parentElement.classList.remove('pulse');
-            }, 1000);
+            thumbnails.forEach(thumb => thumb.style.borderColor = '#ddd');
+            img.style.borderColor = 'var(--accent-color)';
         }
         
         // Language switcher
@@ -912,7 +587,7 @@
                 // Update content
                 details.innerHTML = `
                     <h2 class="section-title" id="personal">વ્યક્તિગત વિગતો</h2>
-                    <table class="card-3d">
+                    <table>
                         <tr><td width="30%">પૂરું નામ</td><td>રાહુલ હરજીવનભાઈ વરમોરા</td></tr>
                         <tr><td>જન્મ તારીખ</td><td>21 મી માર્ચ, 1992 (21/03/1992)</td></tr>
                         <tr><td>જન્મ સ્થળ</td><td>સરા, ગુજરાત</td></tr>
@@ -923,7 +598,7 @@
                     </table>
 
                     <h2 class="section-title" id="family">કુટુંબની વિગતો</h2>
-                    <table class="card-3d">
+                    <table>
                         <tr><td>પિતા</td><td>હરજીવનભાઈ ચતુરભાઈ વરમોરા</td></tr>
                         <tr><td>માતા</td><td>શારદાબેન હરજીવનભાઈ વરમોરા</td></tr>
                         <tr><td>ભાઈઓ</td><td>દિપેશ વરમોરા (પરિણીત), સાગર વરમોરા (અપરણિત )</td></tr>
@@ -934,14 +609,14 @@
                     </table>
 
                     <h2 class="section-title" id="business">વ્યવસાયિક પ્રવૃત્તિઓ</h2>
-                    <table class="card-3d">
-                        <tr><td>શુમંગલ માર્કેટિંગ</td><td>ઢુવા, મોરબી <span class="badge badge-primary pulse">રીટેલ</span></td></tr>
-                        <tr><td>વિલિયમ જોન્સ પિઝા</td><td>મહેન્દ્રનગર, મોરબી <span class="badge badge-accent pulse">ફૂડ</span></td></tr>
-                        <tr><td>શ્રી ઉમિયા નોવેલ્ટી પરોઠા હાઉસ</td><td>મહેન્દ્રનગર અને ઢુવા, મોરબી <span class="badge badge-success pulse">ફૂડ</span></td></tr>
+                    <table>
+                        <tr><td>શુમંગલ માર્કેટિંગ</td><td>ઢુવા, મોરબી <span class="badge badge-primary">રીટેલ</span></td></tr>
+                        <tr><td>વિલિયમ જોન્સ પિઝા</td><td>મહેન્દ્રનગર, મોરબી <span class="badge badge-accent">ફૂડ</span></td></tr>
+                        <tr><td>શ્રી ઉમિયા નોવેલ્ટી પરોઠા હાઉસ</td><td>મહેન્દ્રનગર અને ઢુવા, મોરબી <span class="badge badge-success">ફૂડ</span></td></tr>
                     </table>
 
                     <h2 class="section-title" id="properties">મિલકતની વિગતો</h2>
-                    <table class="card-3d">
+                    <table>
                         <tr><td>જમીન</td><td>30 વીઘા જમીન - સરા <span class="badge badge-info">કૃષિ</span></td></tr>
                         <tr><td>ઘર</td><td>1 - મકાન મહેન્દ્રનગર મોરબી <span class="badge badge-secondary">રહેણાંક</span></td></tr>
                         <tr><td>ફ્લેટ</td><td>1 - 2.BHK ફ્લેટ ક્રાંતિ જ્યોતમાં - 1, મહેન્દ્રનગર, મોરબી <span class="badge badge-secondary">રહેણાંક</span></td></tr>
@@ -949,20 +624,9 @@
                     </table>
 
                     <h2 class="section-title" id="contact">સંપર્ક માહિતી</h2>
-                    <table class="card-3d">
+                    <table>
                         <tr><td>હરજીવનભાઈ વરમોરા (પિતા)</td><td><a href="tel:9879996376">+91 98799 96376</a></td></tr>
                         <tr><td>દિપેશભાઈ વરમોરા (ભાઈ)</td><td><a href="tel:9586343434">+91 9586 343434</a></td></tr>
-                    </table>
-                    
-                    <h2 class="section-title">મારી સાથે જોડાઓ</h2>
-                    <table class="card-3d">
-                        <tr>
-                            <td>સોશિયલ મીડિયા</td>
-                            <td>
-                                <a href="https://www.instagram.com/varmoraj" target="_blank" class="badge badge-accent"><i class="fab fa-instagram"></i> Instagram</a>
-                                <a href="https://www.facebook.com/varmoraj" target="_blank" class="badge badge-primary"><i class="fab fa-facebook-f"></i> Facebook</a>
-                            </td>
-                        </tr>
                     </table>
                 `;
                 
@@ -978,7 +642,7 @@
                 // Update content
                 details.innerHTML = `
                     <h2 class="section-title" id="personal">Personal Details</h2>
-                    <table class="card-3d">
+                    <table>
                         <tr><td width="30%">Full Name</td><td>Rahul Harjivanbhai Varmora</td></tr>
                         <tr><td>Date of Birth</td><td>21<sup>st</sup> March, 1992 (21/03/1992)</td></tr>
                         <tr><td>Place of Birth</td><td>Sara, Gujarat</td></tr>
@@ -989,7 +653,7 @@
                     </table>
 
                     <h2 class="section-title" id="family">Family Details</h2>
-                    <table class="card-3d">
+                    <table>
                         <tr><td>Father</td><td>Harjivanbhai Chaturbhai Varmora</td></tr>
                         <tr><td>Mother</td><td>Shardaben Harjivanbhai Varmora</td></tr>
                         <tr><td>Brothers</td><td>Dipesh Varmora (Married), Sagar Varmora (UnMarried)</td></tr>
@@ -1000,14 +664,14 @@
                     </table>
 
                     <h2 class="section-title" id="business">Business Ventures</h2>
-                    <table class="card-3d">
-                        <tr><td>Shumangal Marketing</td><td>Dhuva, Morbi <span class="badge badge-primary pulse">Retail</span></td></tr>
-                        <tr><td>William John's Pizza</td><td>Mahendranagar, Morbi <span class="badge badge-accent pulse">Food</span></td></tr>
-                        <tr><td>Shree Umiya Novelty Parotha House</td><td>Mahendranagar & Dhuva, Morbi <span class="badge badge-success pulse">Food</span></td></tr>
+                    <table>
+                        <tr><td>Shumangal Marketing</td><td>Dhuva, Morbi <span class="badge badge-primary">Retail</span></td></tr>
+                        <tr><td>William John's Pizza</td><td>Mahendranagar, Morbi <span class="badge badge-accent">Food</span></td></tr>
+                        <tr><td>Shree Umiya Novelty Parotha House</td><td>Mahendranagar & Dhuva, Morbi <span class="badge badge-success">Food</span></td></tr>
                     </table>
 
                     <h2 class="section-title" id="properties">Properties Details</h2>
-                    <table class="card-3d">
+                    <table>
                         <tr><td>Land</td><td>30 Vigha at Sara <span class="badge badge-info">Agricultural</span></td></tr>
                         <tr><td>House</td><td>1 House at Mahendranagar, Morbi <span class="badge badge-secondary">Residential</span></td></tr>
                         <tr><td>Flat</td><td>1 Flat 2-BHK at Kranti Jyot, Mahendranagar, Morbi <span class="badge badge-secondary">Residential</span></td></tr>
@@ -1015,20 +679,9 @@
                     </table>
 
                     <h2 class="section-title" id="contact">Contact Information</h2>
-                    <table class="card-3d">
+                    <table>
                         <tr><td>Harjivanbhai Varmora (Father)</td><td><a href="tel:9879996376">+91 98799 96376</a></td></tr>
                         <tr><td>Dipeshbhai Varmora (Brother)</td><td><a href="tel:9586343434">+91 9586 343434</a></td></tr>
-                    </table>
-                    
-                    <h2 class="section-title">Connect With Me</h2>
-                    <table class="card-3d">
-                        <tr>
-                            <td>Social Media</td>
-                            <td>
-                                <a href="https://www.instagram.com/varmoraj" target="_blank" class="badge badge-accent"><i class="fab fa-instagram"></i> Instagram</a>
-                                <a href="https://www.facebook.com/varmoraj" target="_blank" class="badge badge-primary"><i class="fab fa-facebook-f"></i> Facebook</a>
-                            </td>
-                        </tr>
                     </table>
                 `;
                 
@@ -1045,34 +698,6 @@
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', smoothScroll);
             });
-            
-            // Reinitialize 3D card effects
-            document.querySelectorAll('.card-3d').forEach(card => {
-                card.addEventListener('mousemove', card3DEffect);
-                card.addEventListener('mouseleave', resetCard3DEffect);
-            });
-        }
-        
-        // 3D Card Effect
-        function card3DEffect(e) {
-            const card = this;
-            const cardRect = card.getBoundingClientRect();
-            const cardCenterX = cardRect.left + cardRect.width / 2;
-            const cardCenterY = cardRect.top + cardRect.height / 2;
-            
-            const mouseX = e.clientX - cardCenterX;
-            const mouseY = e.clientY - cardCenterY;
-            
-            const rotateX = (mouseY / cardRect.height) * -10;
-            const rotateY = (mouseX / cardRect.width) * 10;
-            
-            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-            card.style.boxShadow = `${-mouseX/20}px ${-mouseY/20}px 30px rgba(0,0,0,0.2)`;
-        }
-        
-        function resetCard3DEffect() {
-            this.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
-            this.style.boxShadow = '0 10px 30px rgba(0,0,0,0.1)';
         }
         
         // Smooth scrolling for navigation
@@ -1080,7 +705,13 @@
             e.preventDefault();
             const targetId = this.getAttribute('href');
             const targetElement = document.querySelector(targetId);
-            const navbarHeight = document.querySelector('.navbar').offsetHeight;
+            let navbarHeight = 0;
+            
+            // Only account for navbar height if it's fixed (desktop view)
+            if (window.innerWidth > 992) {
+                navbarHeight = document.querySelector('.navbar').offsetHeight;
+            }
+            
             const targetPosition = targetElement.offsetTop - navbarHeight - 20;
             
             window.scrollTo({
@@ -1115,32 +746,32 @@
         
         // Highlight active section in navbar
         window.addEventListener('scroll', () => {
-            const sections = document.querySelectorAll('h2.section-title');
-            let currentSection = '';
-            
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                const sectionHeight = section.clientHeight;
-                const navbarHeight = document.querySelector('.navbar').offsetHeight;
+            // Only run this for desktop view
+            if (window.innerWidth > 992) {
+                const sections = document.querySelectorAll('h2.section-title');
+                let currentSection = '';
                 
-                if (window.pageYOffset >= (sectionTop - navbarHeight - 50)) {
-                    currentSection = section.getAttribute('id');
-                }
-            });
-            
-            document.querySelectorAll('.nav-link').forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href') === `#${currentSection}`) {
-                    link.classList.add('active');
-                }
-            });
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    const navbarHeight = document.querySelector('.navbar').offsetHeight;
+                    
+                    if (window.pageYOffset >= (sectionTop - navbarHeight - 50)) {
+                        currentSection = section.getAttribute('id');
+                    }
+                });
+                
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${currentSection}`) {
+                        link.classList.add('active');
+                    }
+                });
+            }
         });
         
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
-            // Create particles
-            createParticles();
-            
             // Add smooth scroll to all links
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', smoothScroll);
@@ -1155,14 +786,7 @@
             });
             
             // Set first thumbnail as active
-            document.querySelector('.thumbnails img').style.borderColor = 'var(--primary-color)';
-            document.querySelector('.thumbnails img').style.transform = 'translateY(-10px) scale(1.1)';
-            
-            // Initialize 3D card effects
-            document.querySelectorAll('.card-3d').forEach(card => {
-                card.addEventListener('mousemove', card3DEffect);
-                card.addEventListener('mouseleave', resetCard3DEffect);
-            });
+            document.querySelector('.thumbnails img').style.borderColor = 'var(--accent-color)';
         });
     </script>
 </body>
